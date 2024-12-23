@@ -14,4 +14,13 @@ export class LeadsServiceController {
       throw error;
     }
   }
+
+  @MessagePattern('leads.get')
+  async getLeads() {
+    try {
+      return await this.leadsService.findAllLeads()
+    } catch (error) {
+      throw error;
+    }
+  }
 }

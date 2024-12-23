@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model attachment {
+  id        Int       @id @default(autoincrement())
+  notes     String?
+  dealId    Int?
+  userId    Int?
+  action    String?
+  month     String?
+  stage     String?
+  system    Boolean?
+  year      Int?
+  url       String?
+  name      String?
+  type      String?
+  brandId   Int?
+  source    String?
+  tags      String?
+  seenBy    Json[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime
+  pipeline  pipeline? @relation(fields: [dealId], references: [id])
+  user      user?     @relation(fields: [userId], references: [id])
+}
+
+model lead {
+  id                   Int        @id @default(autoincrement())
+  name                 String?
+  email                String?
+  message              String?
+  ip                   String?
+  formDetails          Json?
+  status               String?    @default("Idle")
+  priority             String?    @default("Idle")
+  createdMonth         String?
+  createdYear          Int?
+  endedMonth           String?
+  endedYear            Int?
+  emailSent            Int?       @default(0)
+  isDetailedFormFilled Boolean?   @default(false)
+  createdAt            DateTime   @default(now())
+  updatedAt            DateTime
+  isDead               Boolean?   @default(false)
+  isArchived           Boolean?   @default(false)
+  location             String?
+  source               String?
+  dob                  String?
+  projectName          String?
+  questions            Json?
+  videoUrl             String?
+  pipeline             pipeline[]
+}
+
+model pipeline {
+  id               Int          @id @default(autoincrement())
+  name             String?
+  email            String?
+  stage            String?      @default("Idle")
+  dealValue        Int?
+  closeDate        String?
+  message          String?
+  owner            Int?
+  createdAt        DateTime     @default(now())
+  dealEndedYear    Int?
+  dealCreatedYear  Int?
+  updatedAt        DateTime
+  dealDuration     String?
+  currency         String?      @default("$")
+  dealEndedMonth   String?
+  dealCreatedMonth String?
+  dob              String?
+  projectName      String?
+  questions        Json?
+  videoUrl         String?
+  leadId           Int?
+  attachment       attachment[]
+  lead             lead?        @relation(fields: [leadId], references: [id])
+}
+
+model user {
+  id             Int          @id @default(autoincrement())
+  name           String?
+  email          String
+  password       String
+  role           String
+  active         Boolean      @default(true)
+  delete         Boolean      @default(false)
+  isInitialLogin Boolean      @default(true)
+  timezone       String?
+  location       String?
+  languages      String[]
+  type           String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime
+  attachment     attachment[]
+}

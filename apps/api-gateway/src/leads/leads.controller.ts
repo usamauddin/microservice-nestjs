@@ -14,4 +14,14 @@ export class LeadsController {
       throw error
     }
    } 
+
+   @Get('get-all')
+   async getLeads() {
+    try {
+      return this.leadsService.getAllLeads()
+    } catch (error) {
+       throw error      
+    }
+   }
+
 }

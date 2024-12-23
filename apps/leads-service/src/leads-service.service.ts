@@ -1,8 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class LeadsService {
-  getHello(): string {
-    return 'Hello World!';
+
+  private prismaService = new PrismaClient();
+
+  async findAllLeads() {
+    try {
+    return await this.prismaService.lead.findMany()      
+    } catch (error) {
+      throw error
+    }
   }
+  
+
 }

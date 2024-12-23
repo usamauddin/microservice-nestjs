@@ -13,4 +13,12 @@ export class LeadsService {
       throw error
     }
    }
+
+   async getAllLeads() {
+    try {
+      return await this.leadsClient.send('leads.get', {})
+    } catch (error) {
+      throw error    
+    }
+   }
 }
